@@ -28,5 +28,8 @@ void loadStudents(StudentList *list);
 void addStudent(StudentList *list);
 void displayStudents(const StudentList *list);
 int  readMenuChoice(void);
+void rewriteFile(const StudentList *list);
+void deleteStudent(StudentList *list, int id);
+void updateStudent(StudentList *list, int id);
 
 #endif

@@ -25,15 +25,41 @@ int main(void) {
             case 1:
                 addStudent(&list);
                 break;
-            case 2:
-                // Silme funksiyasi
+        case 2: {
+            printf("Silinecek telebenin ID-sini daxil edin: ");
+            char buf[32];
+            fgets(buf, sizeof(buf), stdin);
+        
+            char *endptr;
+            long val = strtol(buf, &endptr, 10);
+        
+            if (endptr == buf) {
+                printf("Yanlish daxiletme! Reqem daxil edin.\n");
                 break;
+            }
+        
+            deleteStudent(&list, (int)val);
+            break;
+        }
             case 3:
                 displayStudents(&list);
                 break;
-            case 4:
-                // Yenileme funksiyasi
+            case 4: {
+                printf("Deyisdirilecek telebenin ID-sini daxil edin: ");
+                char buf[32];
+                fgets(buf, sizeof(buf), stdin);
+            
+                char *endptr;
+                long val = strtol(buf, &endptr, 10);
+            
+                if (endptr == buf) {
+                    printf("Yanlish daxiletme! Reqem daxil edin.\n");
+                    break;
+                }
+            
+                updateStudent(&list, (int)val);
                 break;
+            }
             case 5:
                 running = 0;
                 break;

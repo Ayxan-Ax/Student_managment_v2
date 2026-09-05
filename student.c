@@ -140,3 +140,84 @@ int readMenuChoice(void) {
 
     return (int)val;
 }
+
+void rewriteFile(const StudentList *list) {
+    FILE *fp = fopen("Students.txt", "w");
+    if (fp == NULL) {
+        printf("xeta bas verdi :((\n");
+        return;
+    }
+
+    for (int i = 0; i < list->count; i++) {
+        fprintf(fp, "%d|%s|%s|%s|%.2f\n",
+        list->data[i].id, list->data[i].name,
+        list->data[i].surname, list->data[i].major,
+        list->data[i].gpa);
+    }
+
+    fclose(fp);
+}
+void deleteStudent(StudentList *list, int id) {
+    int found_index = -1;
+    for (int i = 0; i < list->count; i++){
+        if (list->data[i].id == id){
+            found_index = i;
+            break;
+        }
+    }
+    if (found_index==-1){
+        printf("id Tapildami :((\n");
+        return;
+    }
+    for (int j = found_index; j < list->count - 1; j++) {
+       list->data[j] = list->data[j + 1];
+    }
+    list->count--;
+    rewriteFile(list);
+    printf("sagird ugurla silindi \n");
+}
+void updateStudent(StudentList *list, int id) {
+    int foundIndex = -1;
+    for (int i = 0; i < list->count; i++) {
+        if (list->data[i].id == id) {
+            foundIndex = i;
+            break;
+        }
+    }
+
+    if (foundIndex == -1) {
+        printf("ID tapilmadi :((\n");
+        return;
+    }
+
+    printf("Yeni ad: ");
+    fgets(list->data[foundIndex].name, sizeof(list->data[foundIndex].name), stdin);
+    list->data[foundIndex].name[strcspn(list->data[foundIndex].name, "\n")] = '\0';
+
+    printf("Yeni soyad: ");
+    fgets(list->data[foundIndex].surname, sizeof(list->data[foundIndex].surname), stdin);
+    list->data[foundIndex].surname[strcspn(list->data[foundIndex].surname, "\n")] = '\0';
+
+    printf("Yeni ixtisas: ");
+    fgets(list->data[foundIndex].major, sizeof(list->data[foundIndex].major), stdin);
+    list->data[foundIndex].major[strcspn(list->data[foundIndex].major, "\n")] = '\0';
+
+    while (1) {
+        printf("Yeni GPA: ");
+        char buf[32];
+        fgets(buf, sizeof(buf), stdin);
+
+        char *endptr;
+        float val = strtof(buf, &endptr);
+
+        if (endptr == buf || val < 0.0f) {
+            printf("Yanlish deyer, yenidən daxil edin.\n");
+            continue;
+        }
+        list->data[foundIndex].gpa = val;
+        break;
+    }
+
+    rewriteFile(list);
+    printf("Melumatlar ugurla yenilendi.\n");
+}

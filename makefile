@@ -14,6 +14,6 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(TARGET) Students.txt
+	cmd /c del /f /q $(OBJS) $(TARGET) 2>NUL
 
 .PHONY: all clean
